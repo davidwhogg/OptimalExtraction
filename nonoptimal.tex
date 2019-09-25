@@ -46,18 +46,22 @@ You're welcome.
 In the original paper (Horne, 1986), but modifying some indexing, the
 optimal-extraction algorithm is given as
 \begin{equation}
-f_\lambda \leftarrow \frac{\sum_j W_{j\lambda}\,(D_{j\lambda} - S_{j\labmda}) / P_{j\lambda}}%
+f_\lambda \leftarrow \frac{\sum_j W_{j\lambda}\,(D_{j\lambda} - S_{j\lambda}) / P_{j\lambda}}%
                           {\sum_j W_{j\lambda}}
 \quad ,
 \end{equation}
-where $f_\lambda$ is an estimate of the flux of the source at
-wavelength $\lambda$, the $W_{j\lambda}$ are ``optimal'' weights for
-wavelength lambda, which we will give in a moment, the index $j$
-indexes pixels in the spatial direction, the index $\lambda$ indexes
-pixels in the wavelength direction, the $D_{j\lambda}$ are the pixel
-intensities in pixels $j$, the $S_{j\lambda}$ are sky intensities in
-pixels $j$ (presumed precisely and accurately known, hahaha), and the
-$P_{j\lambda}$ represents the point-spread function.
+where
+the index $j$ indexes pixels in the spatial direction,
+the index $\lambda$ indexes pixels in the wavelength direction,
+$f_\lambda$ is an estimate of the flux of the source at wavelength
+(or really in the column or row) $\lambda$,
+the $W_{j\lambda}$ are ``optimal'' weights for wavelength lambda,
+which we will give in a moment,
+the $D_{j\lambda}$ are the pixel intensities in pixels $j$,
+the $S_{j\lambda}$ are sky intensities in pixels $j$
+(presumed precisely and accurately known, hahaha), and
+the $P_{j\lambda}$ represents the point-spread function,
+about which we will say more below.
 In this setting, the idea is that the spectrograph optics produce a
 two-dimensional spectrum so ``orthogonal'' that we can perform
 extraction at a single ``column'' (or row) of wavelength $\lambda$ by
