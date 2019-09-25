@@ -1,12 +1,147 @@
 \documentclass[12pt, letterpaper]{article}
 
-\addtolength{\topmargin}{-0.50in}
-\addtolength{\textheight}{1.00in}
+\addtolength{\topmargin}{-0.75in}
+\addtolength{\textheight}{1.50in}
+\setlength{\parindent}{1.1\baselineskip}
 
-\begin{document}
+\begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing
 
-\section*{A think-o in spectroscopy's optimal extraction}
+\section*{A think-o in spectroscopic optimal extraction}
 
-\paragraph{Abstract:} Hello Worldy.
+\noindent
+\textbf{David W. Hogg}\\
+{\footnotesize
+\textsl{Center for Cosmology and Particle Physics, New York University}\\
+\textsl{Max-Planck-Institut f\"ur Astronomie}\\
+\textsl{Flatiron Institute, a division of the Simons Foundation}
+}
+
+\paragraph{Abstract:}
+The classic method of \emph{optimal extraction} for obtaining
+one-dimensional spectra from two-dimensional spectrograph images
+operates by constructing an ``optimal'' (in a certain sense) weighted
+sum of sky-subtracted pixel values.
+This optimal sum looks like a regression or a matched filter;
+that's a good outcome, and correct.
+The original paper, however, relies on two related, unnecessary, and
+at least slightly incorrect, assumptions.
+The first is that the data minus the sky divided by the point-spread
+function will deliver an unbiased estimate of the true spectral
+intensity.
+The second is that the instrument PSF has a certain normalization
+property, which requires that the data have been perfectly
+flat-fielded, and that the associated noise estimates were adjusted
+correctly in response.
+Oddly, neither of these assumptions is required; both can be dropped.
+The new expression for optimal extraction is very similar to the
+original formula.
+However it is simpler, less sensitive to uncertainties in the
+flat-field, and correct under weaker assumptions.
+If spectroscopy projects adopt the new expression presented here, it
+will improve and simplify their data-analysis pipelines.
+You're welcome.
+
+\section{Optimal extraction: What's wrong with it?}
+
+In the original paper (Horne, 1986), but modifying some (slightly hard
+to understand) indexing, the optimal-extraction algorithm is given as
+\begin{equation}
+f_\lambda \leftarrow \frac{\sum_j W_{j\lambda}\,(D_j - S_j) / P_{j\lambda}}%
+                          {\sum_j W_{j\lambda}}
+\quad ,
+\end{equation}
+where $f_\lambda$ is an estimate of the flux of the source at
+wavelength $\lambda$, the $W_{j\lambda}$ are ``optimal'' weights we
+will give in a moment, the $D_j$ are the pixel intensities in pixels
+$j$, the $S_j$ are sky intensities in pixels $j$ (presumed precisely
+and accurately known, hahaha), and the $P_{j\lambda}$ represents the
+point-spread function.
+The weights $W_{j\lambda}$ that minimize variance are given by
+\begin{equation}
+W_{j\lambda} = \frac{P_{j\lambda}^2}{V_j}
+\quad ,
+\end{equation}
+where $V_j$ is the variance of the noise in pixel $j$ (which,
+presumably, is supposed to be the sum of the noise in the data and the
+sky estimate.
+And, by assumption, the point-spread function obeys a normalization
+condition
+\begin{equation}
+1 = \sum P_{j\lambda}
+\quad ,
+\end{equation}
+which makes the definition of $P_{j\lambda}$ the probability of a
+\emph{detected} photon of wavelength $\lambda$ being detected in pixel
+$j$.
+Note that this is to be distinguished from the probability of a photon
+of wavelength $\lambda$ at the top of the atmosphere being detected in
+pixel $j$.
+That is, $P_{j\lambda}$ is effectively the PSF in perfectly
+flat-fielded data.
+
+I would change the notation to the following ...
+
+In my notation, the Horne optimal extraction algorithm becomes ...
+
+The algorithm is justified by saying that the XXX are unbiased
+estimates of YYY, and the weights deliver the minimum-variance
+weighted mean of those unbiased estimates.
+
+Unfortunately, this is not true for several reasons, all of which
+relate to the fact that you can't know your point-spread function or
+your flat-field accurately in locations in your spectrograph that are
+not well illuminated by your object or your calibration lamps.
+
+When you don't know this precisely, either the flat-fielding goes
+wrong, or else the division by the point-spread function delivers
+biased estimates of the intensity, or the correction of the data
+uncertainties spoils the variance minimization, or all of the above.
+
+What I will show (below) is that if you do everything consistently
+between the flat-fielding and the data-uncertainty estimation, the
+Horne expressions are not incorrect, they are just numerically
+unstable.
+
+But there is no need to introduce so opportunities for inconsistencies
+or numerical instability when they aren't needed.
+
+A more general statement is that you don't want to be correcting your
+data for the flat-field; you want to be correcting your model for the
+flat-field.
+And in particular, you don't want to be dividing your data by tiny
+numbers!
+
+\section{The new optimal extraction}
+
+There are proofs in statistics that the minimum-variance unbiased
+estimator of a quantity is also the maximum-likelihood value for that
+quantity, given the data.
+
+...
+
+\section{Extensions and discussion}
+
+The point about covariant noise.
+
+The point that they sky and the source should be modeled
+simultaneously, not subtracted.
+
+The point that the sky, the source, and the data used to determine the
+PSF should all be modeled simultaneously!
+
+And the flat, dark, and so on. Why not? If precision requirements are
+high!
+
+\section*{References}
+\begin{list}{}{%
+\rightmargin=0in
+\leftmargin=\parindent
+\itemindent=-1.0\leftmargin
+\listparindent=0.0\leftmargin
+}
+\item Horne, K., 1986,
+An optimal extraction algorithm for CCD spectroscopy,
+PASP 98 609.
+\end{list}
 
 \end{document}
