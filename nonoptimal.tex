@@ -43,25 +43,33 @@ You're welcome.
 
 \section{Optimal extraction: What's wrong with it?}
 
-In the original paper (Horne, 1986), but modifying some (slightly hard
-to understand) indexing, the optimal-extraction algorithm is given as
+In the original paper (Horne, 1986), but modifying some indexing, the
+optimal-extraction algorithm is given as
 \begin{equation}
-f_\lambda \leftarrow \frac{\sum_j W_{j\lambda}\,(D_j - S_j) / P_{j\lambda}}%
+f_\lambda \leftarrow \frac{\sum_j W_{j\lambda}\,(D_{j\lambda} - S_{j\labmda}) / P_{j\lambda}}%
                           {\sum_j W_{j\lambda}}
 \quad ,
 \end{equation}
 where $f_\lambda$ is an estimate of the flux of the source at
-wavelength $\lambda$, the $W_{j\lambda}$ are ``optimal'' weights we
-will give in a moment, the $D_j$ are the pixel intensities in pixels
-$j$, the $S_j$ are sky intensities in pixels $j$ (presumed precisely
-and accurately known, hahaha), and the $P_{j\lambda}$ represents the
-point-spread function.
+wavelength $\lambda$, the $W_{j\lambda}$ are ``optimal'' weights for
+wavelength lambda, which we will give in a moment, the index $j$
+indexes pixels in the spatial direction, the index $\lambda$ indexes
+pixels in the wavelength direction, the $D_{j\lambda}$ are the pixel
+intensities in pixels $j$, the $S_{j\lambda}$ are sky intensities in
+pixels $j$ (presumed precisely and accurately known, hahaha), and the
+$P_{j\lambda}$ represents the point-spread function.
+In this setting, the idea is that the spectrograph optics produce a
+two-dimensional spectrum so ``orthogonal'' that we can perform
+extraction at a single ``column'' (or row) of wavelength $\lambda$ by
+just doing a sum over the pixels $j$ in that column.
+I will say words about this a bit below.
+
 The weights $W_{j\lambda}$ that minimize variance are given by
 \begin{equation}
-W_{j\lambda} = \frac{P_{j\lambda}^2}{V_j}
+W_{j\lambda} = \frac{P_{j\lambda}^2}{V_{j\lambda}}
 \quad ,
 \end{equation}
-where $V_j$ is the variance of the noise in pixel $j$ (which,
+where $V_{j\lambda}$ is the variance of the noise in pixel $j$ (which,
 presumably, is supposed to be the sum of the noise in the data and the
 sky estimate.
 And, by assumption, the point-spread function obeys a normalization
@@ -70,27 +78,38 @@ condition
 1 = \sum P_{j\lambda}
 \quad ,
 \end{equation}
-which makes the definition of $P_{j\lambda}$ the probability of a
-\emph{detected} photon of wavelength $\lambda$ being detected in pixel
-$j$.
+which makes the definition of $P_{j\lambda}$ the probability that a
+\emph{detected} photon in column (or row) $\lambda$ was detected in
+row (or column) $j$.
 Note that this is to be distinguished from the probability of a photon
 of wavelength $\lambda$ at the top of the atmosphere being detected in
 pixel $j$.
+Or from the probability of a photon at the top of the atmosphere that
+would (if detected) end up in column (or row) $\lambda$ being (in
+fact) detected in row (or column) $j$.
 That is, $P_{j\lambda}$ is effectively the PSF in perfectly
 flat-fielded data.
+Thus the optimal extraction paper assumes not just that the data are
+zero-, dark-, and bias- subtracted, but also that they have been
+flat-fielded to a precision that is so good that nothing could
+possibly go wrong.
 
-I would change the notation to the following ...
-
-In my notation, the Horne optimal extraction algorithm becomes ...
-
-The algorithm is justified by saying that the XXX are unbiased
-estimates of YYY, and the weights deliver the minimum-variance
+The algorithm is justified by saying that the ratios
+$(D_{j\lambda}-S_{j\lambda})/P_{j\lambda}$ are unbiased estimates of
+$f_\lambda$.
+\emph{If} this is the case, and if all the pixels are independent, and
+\emph{if} all the uncertainty variance estimates $V_{j\lambda}$ are
+sufficiently accurate, then it is true that this setting of the
+weights$W_{j\lambda}$ will indeed deliver the minimum-variance
 weighted mean of those unbiased estimates.
 
 Unfortunately, this is not true for several reasons, all of which
 relate to the fact that you can't know your point-spread function or
 your flat-field accurately in locations in your spectrograph that are
 not well illuminated by your object or your calibration lamps.
+
+For example... explain what an EPRV spectrograph looks like these days
+HOGG.
 
 When you don't know this precisely, either the flat-fielding goes
 wrong, or else the division by the point-spread function delivers
@@ -113,6 +132,35 @@ numbers!
 
 \section{The new optimal extraction}
 
+If I got to decide, I would call the (zero-, dark-, and
+bias-subtracted but \emph{not} flat-fielded) image data $y$ (which is
+a two-dimensional image), a column (or row) of the data $y_{\lambda}$
+(which is a vector or list), and a pixel $y_{j\lambda}$ (which is a
+scalar).
+I would call the point-spread function (PSF) at column (or row)
+$\lambda$ $\psi_\lambda$.
+This is also a vector or list..
+
+But importantly I would not normalize this PSF to unity. I would DO
+SOMETHING WHAT HOGG?
+
+AND DESCRIBE THE SKY NOW.
+
+Our belief is that the vector $y_{\lambda}$ (the set of pixels
+$y_{j\lambda}$ for all $j$) is generated by a true flux $f_{\lambda}$
+times the PSF, plus sky:
+\begin{equation}
+E[y_\lambda] = s_\lambda + f_\lambda\,\psi_\lambda
+\end{equation}
+That is, the expectation for the data in column (or row) $\lambda$ is
+a sum of the sky model and the source model.
+
+I would presume that the 
+
+I would change the notation to the following ...
+
+In my notation, the Horne optimal extraction algorithm becomes ...
+
 There are proofs in statistics that the minimum-variance unbiased
 estimator of a quantity is also the maximum-likelihood value for that
 quantity, given the data.
@@ -131,6 +179,10 @@ PSF should all be modeled simultaneously!
 
 And the flat, dark, and so on. Why not? If precision requirements are
 high!
+
+In addition, the optimal extraction paper makes VERY STRONG
+ASSUMPTIONS about how the spectrum is laid out on the
+detector.... HOGG
 
 \section*{References}
 \begin{list}{}{%
