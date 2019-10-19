@@ -1,7 +1,7 @@
 LATEX       = pdflatex
 CHECK_RERUN = grep "Rerun to get" $*.log
 
-all: nonoptimal.pdf
+all: tilty.pdf
 
 %.pdf: %.tex
 	${LATEX} $*
