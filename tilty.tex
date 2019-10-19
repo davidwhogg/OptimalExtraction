@@ -1,10 +1,16 @@
 \documentclass[12pt, letterpaper]{article}
 
+% typesetting
+\newcommand{\foreign}[1]{\textsl{#1}}
+\newcommand{\etal}{\foreign{et al.}}
+
+% page formatting
 \addtolength{\topmargin}{-0.75in}
 \addtolength{\textheight}{1.50in}
 \setlength{\parindent}{1.1\baselineskip}
+\sloppy\sloppypar\raggedbottom\frenchspacing
 
-\begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing
+\begin{document}
 
 \section*{\raggedright%
 Spectroscopic optimal extraction when the line-spread function is slightly tilted}
@@ -30,16 +36,64 @@ HOGG...
 
 In the original paper (Horne, 1986)...
 
+It can be re-cast as maximum-likelihood in a forward model...
+
+In what follows, we are going to assume you are sensible and are using
+the flat-relative form of optimal extraction (Zechmeister \etal,
+2014), which is duh...
+
+It gets around the deconvolve / reconvolve problems of other
+forward-modeling methods...
+
+But it is flummoxed if the LSF isn't axis-aligned with the
+CCD pixel grid...
+
+\section{A slightly tilty spectrograph}
+
+We are going to re-write FROE (Zechmeister \etal, 2014) as
+\begin{equation}
+I(x,y) = r(x)\,f(x, y) + \mbox{noise}
+\end{equation}
+where
+$I(x,y)$ is the data (photon counts in the sky-subtracted image maybe)
+at the pixel located at 2-d detector position $(x,y)$,
+$r(x)$ is the ratio of the object flux density to the flat flux density
+at the wavelength corresponding to detector $x$-position $x$, and
+$f(x,y)$ is the expected photon counts from the flat in the pixel
+located at $(x,y)$.
+The values of $f(x,y)$ are presumed to be known both accurately and
+precisely from copious amounts of flat-field data.
+The ratios $r(x)$ are learned by least-squares fitting to the data
+$I(x,y)$.
+
+We are going to modify this by permitting the wavelength direction $x$
+to be distorted as a function of position in the detector.
+$\Delta x$ is a polynomial in x, linear in y, or really y relative to
+the trace ``center''.
+\begin{equation}
+I(x,y) = r(x + \Delta x)\,f(x, y)
+\end{equation}
+\begin{equation}
+\Delta x = g(x)\,[y - y_c(x)]
+\end{equation}
+where, ...
+Note that $g(x)$ can change sign and so on...
+
 \section*{References}
 \begin{list}{}{%
 \rightmargin=0in
 \leftmargin=\parindent
 \itemindent=-1.0\leftmargin
 \listparindent=0.0\leftmargin
+\itemsep=0ex
+\parsep=0ex
 }
 \item Horne, K., 1986,
 An optimal extraction algorithm for CCD spectroscopy,
 PASP 98 609.
+\item Zechmeister, M., Anglada-Escud\'e, G., Reiners, A., 2014,
+Flat-relative optimal extraction. A quick and efficient algorithm for stabilised spectrographs,
+A\&A 561 59.
 \end{list}
 
 \end{document}
