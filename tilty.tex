@@ -48,7 +48,13 @@ forward-modeling methods...
 But it is flummoxed if the LSF isn't axis-aligned with the
 CCD pixel grid...
 
-\section{A slightly tilty spectrograph}
+\section{Assumptions}
+
+Flat is perfectly known and appropriate for this exposure.
+
+LSF is close to being perfectly aligned with the pixel grid.
+
+\section{A model of a slightly tilty spectrograph}
 
 We are going to re-write FROE (Zechmeister \etal, 2014) as
 \begin{equation}
@@ -58,7 +64,7 @@ where
 $I(x,y)$ is the data (photon counts in the sky-subtracted image maybe)
 at the pixel located at 2-d detector position $(x,y)$,
 $r(x)$ is the ratio of the object flux density to the flat flux density
-at the wavelength corresponding to detector $x$-position $x$, and
+at the wavelength corresponding to detector dispersion-direction position $x$, and
 $f(x,y)$ is the expected photon counts from the flat in the pixel
 located at $(x,y)$.
 The values of $f(x,y)$ are presumed to be known both accurately and
@@ -66,18 +72,26 @@ precisely from copious amounts of flat-field data.
 The ratios $r(x)$ are learned by least-squares fitting to the data
 $I(x,y)$.
 
-We are going to modify this by permitting the wavelength direction $x$
+We are going to modify this by permitting the dispersion direction $x$
 to be distorted as a function of position in the detector.
-$\Delta x$ is a polynomial in x, linear in y, or really y relative to
-the trace ``center''.
 \begin{equation}
 I(x,y) = r(x + \Delta x)\,f(x, y)
 \end{equation}
 \begin{equation}
 \Delta x = g(x)\,[y - y_c(x)]
 \end{equation}
-where, ...
+where
+$\Delta x$ is a function giving the pixel-denominated wavelength
+distortion away from the fiducial wavelength solution appropriate for,
+say, the centerline of the trace,
+$g(x)$ is a polynomial (or other smooth function) of the dispersion
+direction $x$,
+the $y$-dependence is purely linear in the cross-dispersion direction $y$, and
+$y_c(x)$ is the defined ``centerline'' of the spectroscopic trace at which the
+wavelength solution is officially fiducial.
 Note that $g(x)$ can change sign and so on...
+
+We have defined everything in terms of pixel position $x, y$ and not wavelength, because... prior to calibration...
 
 \section*{References}
 \begin{list}{}{%
